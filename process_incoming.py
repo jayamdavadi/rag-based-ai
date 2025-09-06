@@ -25,9 +25,25 @@ question_embedding = create_embedding(incoming_query)[0]
 
 # Find similarity of question_embedding with other embeddings
 similarities = cosine_similarity(np.vstack(df['embedding'].values),[question_embedding]).flatten()
-print(similarities)
-top_results = 3
+# print(similarities)
+top_results = 5
 max_index = similarities.argsort()[::-1][0:top_results]
-print(max_index)
+# print(max_index)
 new_df = df.loc[max_index]
-print(new_df[["title","number" , "text"]])
+# print(new_df[["title","number" , "text"]])
+
+prompt = f'''I am teaching few programming languages in 10 minutes tutoriols. Here are 
+video subtitle chunks containing video title ,video number,start time in seconds, 
+end time in seconds, text at that time:
+
+{new_df[["title", "number","start_time", "end_time", "text"]].to_json()}
+-----------------------------------
+"{incoming_query}"
+User asked this question related to video chunks, you have to answer where and how much content 
+is taught where (in which video and what timestamp) and guide the user to go to that perticular video.
+If user ask unrelated questions tell him that you can only answer questions related to the course.
+'''
+with open("prompt.txt", "w") as f:
+    f.write(prompt)
+# for index, item in new_df.iterrows():
+#     print(index,item["title"], item["number"], item["text"],item["start"],item["end"])
