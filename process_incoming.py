@@ -13,6 +13,18 @@ def create_embedding(text_list):
 
     embedding = r.json()['embeddings']
     return embedding
+#model : ollama run llama3.2
+def inferece(prompt):
+    r = requests.post("http://localhost:11434/api/generate", json={
+        "model": "llama3.2",
+        "prompt": prompt,
+        "stream": False
+    })
+    response = r.json()
+    print(response)
+    return resposne
+
+
 
 # a = create_embedding("My name is Jay Amdavadi")
 df = joblib.load("embeddings.joblib")
@@ -36,14 +48,23 @@ prompt = f'''I am teaching few programming languages in 10 minutes tutoriols. He
 video subtitle chunks containing video title ,video number,start time in seconds, 
 end time in seconds, text at that time:
 
-{new_df[["title", "number","start_time", "end_time", "text"]].to_json()}
+{new_df[["title", "number","start_time", "end_time", "text"]].to_json(orient="records")}
 -----------------------------------
 "{incoming_query}"
-User asked this question related to video chunks, you have to answer where and how much content 
+User asked this question related to video chunks, you have to answer in human way(don't mention the above formate,
+it's just for you) where and how much content 
 is taught where (in which video and what timestamp) and guide the user to go to that perticular video.
 If user ask unrelated questions tell him that you can only answer questions related to the course.
 '''
 with open("prompt.txt", "w") as f:
     f.write(prompt)
+
+resposne = inferece(prompt)["response"]
+print(resposne)
+with open("resposne.txt", "w") as f:
+    f.write(resposne)
+
+
+
 # for index, item in new_df.iterrows():
 #     print(index,item["title"], item["number"], item["text"],item["start"],item["end"])
