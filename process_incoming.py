@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import joblib
+import openai
 
 def create_embedding(text_list):
     r = requests.post("http://localhost:11434/api/embed", json={
@@ -15,28 +16,42 @@ def create_embedding(text_list):
     embedding = r.json()['embeddings']
     return embedding
 #model : ollama run llama3.2
-def inferece(prompt):
-    r = requests.post("http://localhost:11434/api/generate", json={
-        "model": "llama3.2",
-        "prompt": prompt,
-        "stream": False
-    })
-    response = r.json()
-    print(response)
-    return resposne
+# def inference(prompt):
+#     r = requests.post("http://localhost:11434/api/generate", json={
+#         "model": "llama3.2",
+#         "prompt": prompt,
+#         "stream": False
+#     })
+#     response = r.json()
+#     print(response)
+#     return response
+def inference(prompt):
+    response = openai.chat.completions.create(
+        model="gpt-4",  
+        messages=[
+            {"role": "system", "content": "You are a helpful programming tutor."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.2,
+        max_tokens=1000
+    )
+    answer = response.choices[0].message.content
+    print(answer)
+    return answer
+
 
 df = joblib.load("embeddings.joblib")
 
 
 incoming_query = input("Ask the Question:")
-question_embedding = create_embedding(incoming_query)[0]
+question_embedding = create_embedding([incoming_query])[0]
 # print(question_embedding)
 
 # Find similarity of question_embedding with other embeddings
 similarities = cosine_similarity(np.vstack(df['embedding'].values),[question_embedding]).flatten()
 # print(similarities)
 top_results = 5
-max_index = similarities.argsort()[::-1][0:top_results]
+max_index = similarities.argsort()[::-1][:top_results]
 # print(max_index)
 new_df = df.loc[max_index]
 # print(new_df[["title","number" , "text"]])
@@ -56,10 +71,9 @@ If user ask unrelated questions tell him that you can only answer questions rela
 with open("prompt.txt", "w") as f:
     f.write(prompt)
 
-resposne = inferece(prompt)["response"]
-print(resposne)
-with open("resposne.txt", "w") as f:
-    f.write(resposne)
+response = inference(prompt)
+with open("response.txt", "w") as f:
+    f.write(response)
 
 # for index, item in new_df.iterrows():
 #     print(index,item["title"], item["number"], item["text"],item["start"],item["end"])
