@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import joblib
+
 def create_embedding(text_list):
     r = requests.post("http://localhost:11434/api/embed", json={
         "model": "bge-m3",
@@ -24,11 +25,7 @@ def inferece(prompt):
     print(response)
     return resposne
 
-
-
-# a = create_embedding("My name is Jay Amdavadi")
 df = joblib.load("embeddings.joblib")
-# print(a)
 
 
 incoming_query = input("Ask the Question:")
@@ -51,9 +48,9 @@ end time in seconds, text at that time:
 {new_df[["title", "number","start_time", "end_time", "text"]].to_json(orient="records")}
 -----------------------------------
 "{incoming_query}"
-User asked this question related to video chunks, you have to answer in human way(don't mention the above formate,
-it's just for you) where and how much content 
-is taught where (in which video and what timestamp) and guide the user to go to that perticular video.
+User asked this question related to video chunks, you have to answer in human way(don't mention the 
+above formate, it's just for you) where and how much content is taught where 
+(in which video and what timestamp) and guide the user to go to that perticular video.
 If user ask unrelated questions tell him that you can only answer questions related to the course.
 '''
 with open("prompt.txt", "w") as f:
@@ -63,8 +60,6 @@ resposne = inferece(prompt)["response"]
 print(resposne)
 with open("resposne.txt", "w") as f:
     f.write(resposne)
-
-
 
 # for index, item in new_df.iterrows():
 #     print(index,item["title"], item["number"], item["text"],item["start"],item["end"])

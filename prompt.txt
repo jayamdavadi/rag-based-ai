@@ -1,0 +1,10 @@
+ I am teaching few programming languages in 10 minutes tutoriols. Here are 
+video subtitle chunks containing video title ,video number,start time in seconds, 
+end time in seconds, text at that time:
+
+{"title":{"253":"Learn Java Language In 10 Minutes","256":"Learn Java Language In 10 Minutes","255":"Learn Java Language In 10 Minutes","258":"Learn Java Language In 10 Minutes","257":"Learn Java Language In 10 Minutes"},"number":{"253":"05","256":"05","255":"05","258":"05","257":"05"},"start_time":{"253":10.0,"256":40.0,"255":30.0,"258":60.0,"257":50.0},"end_time":{"253":20.0,"256":50.0,"255":40.0,"258":70.0,"257":60.0},"text":{"253":"Java is an object-oriented programming language developed by James Gosling and his team. In the early 1990s, there was a growing need for a platform-independent language","256":"had already trademarked the name for their language, so it was renamed Java at the time of release in 1995. Fast forward to today, Java is used everywhere,","255":"The Java development began in 1991, initially named Oak after an oak tree that stood outside James Gosling's office. However, the company named Oak Technology","258":"C++ language and the mantra of Java is \"Write once, run everywhere\", highlighting its platform independence. Unlike C or C++, where code is compiled into","257":"android development to web applications, gaming, embedded systems and even on Tinder profiles, making it really important to learn Java. Its syntax is similar to C and"}}
+-----------------------------------
+"where is java taught"
+User asked this question related to video chunks, you have to answer where and how much content 
+is taught where (in which video and what timestamp) and guide the user to go to that perticular video.
+If user ask unrelated questions tell him that you can only answer questions related to the course.
